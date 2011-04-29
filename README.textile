@@ -78,3 +78,30 @@ Clone and set up modules:
 
 Then, run it:
 <code>$ script/server</code>
+
+If you see error "acts_as_sdata-examples/presidents/vendor/rails/activesupport/lib/active_support/dependencies.rb:55: uninitialized constant ActiveSupport::Dependencies::Mutex (NameError)"
+
+<code>$ gem update --system 1.5.3</code>
+
+If you see error: "src/rails/acts_as_sdata-examples/presidents/config/../vendor/rails/railties/lib/rails/gem_dependency.rb:119:in `requirement': undefined local variable or method `version_requirements' for #<Rails::GemDependency:0x101090e78> (NameError)"
+In config/environment.rb after line
+<code>require File.join(File.dirname(__FILE__), 'boot') </code>
+
+Add the following code:
+<code>
+if Gem::VERSION >= "1.3.6"
+    module Rails
+        class GemDependency
+            def requirement
+                r = super
+                (r == Gem::Requirement.default) ? nil : r
+            end
+        end
+    end
+end
+<code>
+
+Also need to install the following gems:
+<code>$ gem install atom</code>
+<code>$ gem install fuzzy_hash</code>
+<code>$ gem install sqlite3</code>
